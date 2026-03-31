@@ -4,39 +4,57 @@
 <meta charset="UTF-8">
 <title>Attendance Donut Chart Generator</title>
 
+
+<!-- ✅ Load Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+<!-- ✅ Load Data Labels Plugin -->
+https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2script>
 
 
 <style>
 body {
     font-family: Arial, sans-serif;
-    background: #f4f4f4;
-    padding: 20px;
+    background: #eaeaea;
+    padding: 40px 10px;
 }
 .container {
     width: 95%;
-    max-width: 550px;
-    margin: auto;
+    max-width: 600px;
     background: #fff;
+    margin: auto;
     padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
-h2 { text-align: center; }
+h2 {
+    text-align: center;
+    margin-bottom: 25px;
+}
 input, textarea {
-    width: 100%; padding: 10px;
-    border: 1px solid #ccc; border-radius: 6px;
+    width: 100%;
+    padding: 12px;
     margin-bottom: 15px;
+    border: 1px solid #bbb;
+    border-radius: 6px;
 }
 button {
-    width: 100%; padding: 14px;
-    background: #0066ff; color: white;
-    border-radius: 6px; border: none;
-    font-size: 16px; cursor: pointer;
+    width: 100%;
+    padding: 14px;
+    background: #0066ff;
+    color: white;
+    font-size: 17px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
 }
-button:hover { background: #004acc; }
-.chart-box { text-align: center; margin-top: 25px; }
+button:hover {
+    background: #004cc0;
+}
+.chart-box {
+    margin-top: 30px;
+    text-align: center;
+}
 </style>
 </head>
 
@@ -52,11 +70,7 @@ button:hover { background: #004acc; }
     <input type="text" id="teacherInput" placeholder="Enter teacher name">
 
     <label><b>Enter Names (One per line):</b></label>
-    <textarea id="namesInput" rows="8" placeholder="Example:
-Srinivasulu
-Rammohan
-Santhi
-Sujatha"></textarea>
+    <textarea id="namesInput" rows="8"></textarea>
 
     <button onclick="generateChart()">Generate Chart</button>
 
@@ -66,6 +80,7 @@ Sujatha"></textarea>
 </div>
 
 <script>
+// ✅ CENTER TEXT PLUGIN
 const centerTextPlugin = {
     id: 'centerText',
     afterDraw(chart, args, options) {
@@ -84,6 +99,7 @@ const centerTextPlugin = {
 
 let chartInstance = null;
 
+// ✅ GENERATE THE DONUT CHART
 function generateChart() {
     const rawNames = document.getElementById("namesInput").value.trim();
     const teacher = document.getElementById("teacherInput").value.trim();
@@ -124,16 +140,19 @@ function generateChart() {
             cutout: "55%",
             plugins: {
                 legend: { display: false },
+
                 title: {
                     display: true,
                     text: `Attendees — ${date}`,
-                    font: { size: 18, weight: "bold" }
+                    font: { size: 20, weight: "bold" }
                 },
+
                 datalabels: {
                     color: "#fff",
                     font: { size: 12, weight: "bold" },
                     formatter: (_, ctx) => ctx.chart.data.labels[ctx.dataIndex]
                 },
+
                 centerText: {
                     count: count,
                     teacher: teacher
