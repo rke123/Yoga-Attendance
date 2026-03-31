@@ -5,7 +5,7 @@
 <title>Attendance Donut Chart Generator</title>
 
 <!-- ✅ Load Chart.js -->
-https://cdn.jsdelivr.net/npm/chart.js</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <!-- ✅ Load Data Labels Plugin -->
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
@@ -68,11 +68,7 @@ button:hover {
     <input type="text" id="teacherInput" placeholder="Enter teacher name">
 
     <label><b>Enter Names (One per line):</b></label>
-    <textarea id="namesInput" rows="8" placeholder="Example:
-Radhika
-Rama
-Sita
-Laxman"></textarea>
+    <textarea id="namesInput" rows="8"></textarea>
 
     <button onclick="generateChart()">Generate Chart</button>
 
@@ -82,7 +78,7 @@ Laxman"></textarea>
 </div>
 
 <script>
-// ✅ Center Text Plugin
+// ✅ CENTER TEXT PLUGIN
 const centerTextPlugin = {
     id: 'centerText',
     afterDraw(chart, args, options) {
@@ -103,7 +99,7 @@ const centerTextPlugin = {
 
 let chartInstance = null;
 
-// ✅ Generate Chart
+// ✅ CREATE THE DONUT CHART
 function generateChart() {
     const rawNames = document.getElementById("namesInput").value.trim();
     const teacher = document.getElementById("teacherInput").value.trim();
@@ -145,16 +141,20 @@ function generateChart() {
             cutout: "55%",
             plugins: {
                 legend: { display: false },
+
                 title: {
                     display: true,
                     text: `Attendees — ${date}`,
                     font: { size: 20, weight: "bold" }
                 },
+
                 datalabels: {
                     color: "#fff",
                     font: { size: 12, weight: "bold" },
-                    formatter: (_, ctx) => ctx.chart.data.labels[ctx.dataIndex]
+                    formatter: (_, ctx) =>
+                        ctx.chart.data.labels[ctx.dataIndex]
                 },
+
                 centerText: {
                     count: count,
                     teacher: teacher
@@ -167,4 +167,3 @@ function generateChart() {
 
 </body>
 </html>
-``
