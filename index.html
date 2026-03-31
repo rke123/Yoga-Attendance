@@ -5,9 +5,9 @@
 <title>Attendance Donut Chart Generator</title>
 
 <!-- ✅ Load Chart.js -->
-<script src="https://cdn/npm/chart.js</script>
+<script src="https://cdn.jsdelivrt.js</script>
 
-<!-- ✅ Load Data Labels Plugin -->
+<!-- ✅ Load DataLabels plugin -->
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 
 <style>
@@ -78,6 +78,7 @@ button:hover {
 </div>
 
 <script>
+// ✅ Center text plugin
 const centerTextPlugin = {
     id: 'centerText',
     afterDraw(chart, args, options) {
@@ -96,6 +97,7 @@ const centerTextPlugin = {
 
 let chartInstance = null;
 
+// ✅ Build chart
 function generateChart() {
     const rawNames = document.getElementById("namesInput").value.trim();
     const teacher = document.getElementById("teacherInput").value.trim();
@@ -144,7 +146,8 @@ function generateChart() {
                 datalabels: {
                     color: "#fff",
                     font: { size: 12, weight: "bold" },
-                    formatter: (_, ctx) => ctx.chart.data.labels[ctx.dataIndex]
+                    formatter: (_, ctx) =>
+                        ctx.chart.data.labels[ctx.dataIndex]
                 },
                 centerText: {
                     count: count,
@@ -158,3 +161,4 @@ function generateChart() {
 
 </body>
 </html>
+``
