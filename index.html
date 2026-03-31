@@ -1,1 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Attendance Donut Chart Generator</title>
 
+<!-- ✅ Load Chart.js -->
+<script src="https://cdn/npm/chart.js</script>
+
+<!-- ✅ Load Data Labels Plugin -->
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #eaeaea;
+    padding: 40px 10px;
+}
+.container {
+    width: 95%;
+    max-width: 600px;
+    background: #fff;
+    margin: auto;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+h2 {
+    text-align: center;
+    margin-bottom: 25px;
+}
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+}
+button {
+    width: 100%;
+    padding: 14px;
+    background: #0066ff;
+    color: white;
+    font-size: 17px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+button:hover {
+    background: #004cc0;
+}
+.chart-box {
+    margin-top: 30px;
+    text-align: center;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Attendance Donut Chart</h2>
+
+    <label><b>Date:</b></label>
+    <input type="date" id="dateInput" />
+
+    <label><b>Shikshak Name:</b></label>
+    <input type="text" id="teacherInput" placeholder="Enter teacher name" />
+
+    <label><b>Enter Names (One per line):</b></label>
+    <textarea id="namesInput" rows="8"></textarea>
+
+    <button onclick="generateChart()">Generate Chart</button>
+
+    <div class="chart-box">
+        <canvas id="donutChart" width="450" height="450"></canvas>
+    </div>
+</div>
+
+<script>
+const centerTextPlugin = {
+    id: 'centerText',
+    afterDraw(chart, args, options) {
+        const { ctx } = chart;
+        ctx.save();
+        ctx.font = "bold 20px Arial";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = "black";
+        ctx.fillText(`Count : ${options.count}`, chart.width / 2, chart.height / 2 - 12);
+        ctx.font = "16px Arial";
+        ctx.fillText(`Shikshak : ${options.teacher}`, chart.width / 2, chart.height / 2 + 18);
+        ctx.restore();
+    }
+};
+
+let chartInstance = null;
+
+function generateChart() {
+    const rawNames = document.getElementById("namesInput").value.trim();
+    const teacher = document.getElementById("teacherInput").value.trim();
+    const date = document.getElementById("dateInput").value;
+
+    if (!rawNames || !teacher || !date) {
+        alert("Please fill all fields.");
+        return;
+    }
+
+    const attendees = rawNames.split("\n").map(n => n.trim()).filter(n => n);
+    const count = attendees.length;
+    const values = attendees.map(() => 1);
+
+    const colors = [
+        "#5DA9E9", "#787A7D", "#C05746", "#1D3C62", "#EB8A3E",
+        "#9E7B17", "#1D4E89", "#6EA04F", "#4671D5", "#F5C046",
+        "#A4A4A4", "#C3D825", "#FF8C61", "#6A4C93"
+    ];
+
+    const ctx = document.getElementById("donutChart").getContext("2d");
+
+    if (chartInstance) chartInstance.destroy();
+
+    chartInstance = new Chart(ctx, {
+        type: "doughnut",
+        plugins: [ChartDataLabels, centerTextPlugin],
+        data: {
+            labels: attendees,
+            datasets: [{
+                data: values,
+                backgroundColor: colors.slice(0, attendees.length),
+                borderColor: "#fff",
+                borderWidth: 2
+            }]
+        },
+        options: {
+            cutout: "55%",
+            plugins: {
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: `Attendees — ${date}`,
+                    font: { size: 20, weight: "bold" }
+                },
+                datalabels: {
+                    color: "#fff",
+                    font: { size: 12, weight: "bold" },
+                    formatter: (_, ctx) => ctx.chart.data.labels[ctx.dataIndex]
+                },
+                centerText: {
+                    count: count,
+                    teacher: teacher
+                }
+            }
+        }
+    });
+}
+</script>
+
+</body>
+</html>
