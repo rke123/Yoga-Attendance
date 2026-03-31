@@ -4,13 +4,11 @@
 <meta charset="UTF-8">
 <title>Attendance Donut Chart Generator</title>
 
-
 <!-- ✅ Load Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+https://cdn.jsdelivr.net/npm/chart.js</script>
 
 <!-- ✅ Load Data Labels Plugin -->
-https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2script>
-
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 
 <style>
 body {
@@ -70,7 +68,11 @@ button:hover {
     <input type="text" id="teacherInput" placeholder="Enter teacher name">
 
     <label><b>Enter Names (One per line):</b></label>
-    <textarea id="namesInput" rows="8"></textarea>
+    <textarea id="namesInput" rows="8" placeholder="Example:
+Radhika
+Rama
+Sita
+Laxman"></textarea>
 
     <button onclick="generateChart()">Generate Chart</button>
 
@@ -80,7 +82,7 @@ button:hover {
 </div>
 
 <script>
-// ✅ CENTER TEXT PLUGIN
+// ✅ Center Text Plugin
 const centerTextPlugin = {
     id: 'centerText',
     afterDraw(chart, args, options) {
@@ -90,16 +92,18 @@ const centerTextPlugin = {
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillStyle = "black";
-        ctx.fillText(`Count : ${options.count}`, chart.width / 2, chart.height / 2 - 10);
+        ctx.fillText(`Count : ${options.count}`, chart.width / 2, chart.height / 2 - 12);
+
         ctx.font = "16px Arial";
-        ctx.fillText(`Shikshak : ${options.teacher}`, chart.width / 2, chart.height / 2 + 20);
+        ctx.fillText(`Shikshak : ${options.teacher}`, chart.width / 2, chart.height / 2 + 18);
+
         ctx.restore();
     }
 };
 
 let chartInstance = null;
 
-// ✅ GENERATE THE DONUT CHART
+// ✅ Generate Chart
 function generateChart() {
     const rawNames = document.getElementById("namesInput").value.trim();
     const teacher = document.getElementById("teacherInput").value.trim();
@@ -112,6 +116,7 @@ function generateChart() {
 
     const attendees = rawNames.split("\n").map(n => n.trim()).filter(n => n);
     const count = attendees.length;
+
     const values = attendees.map(() => 1);
 
     const colors = [
@@ -140,19 +145,16 @@ function generateChart() {
             cutout: "55%",
             plugins: {
                 legend: { display: false },
-
                 title: {
                     display: true,
                     text: `Attendees — ${date}`,
                     font: { size: 20, weight: "bold" }
                 },
-
                 datalabels: {
                     color: "#fff",
                     font: { size: 12, weight: "bold" },
                     formatter: (_, ctx) => ctx.chart.data.labels[ctx.dataIndex]
                 },
-
                 centerText: {
                     count: count,
                     teacher: teacher
@@ -165,3 +167,4 @@ function generateChart() {
 
 </body>
 </html>
+``
